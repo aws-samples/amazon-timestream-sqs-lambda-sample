@@ -1,4 +1,4 @@
-# Amazon Timestream SQS Lambda Sample Stack
+# Amazon Timestream SQS Lambda Sample
 This is a CDK stack written in TypeScript that sets up an AWS infrastructure to process data from an [Amazon Simple Queue Service (SQS)](https://aws.amazon.com/pm/sqs) queue and write it to [Amazon Timestream](https://aws.amazon.com/timestream) using [AWS Lambda](https://aws.amazon.com/lambda/).
 
 ## Overview
