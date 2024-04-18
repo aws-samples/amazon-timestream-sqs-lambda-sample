@@ -56,7 +56,7 @@ export class AmazonTimestreamSqsLambdaSampleStack extends cdk.Stack {
 
   private createProcessSQSQueueLambda() {
     const processSQSFunction = new lambda.Function(this, 'TimestreamSQSLambdaProcessor', {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'sqstotimestream.handler',
       code: lambda.Code.fromAsset('lambda'),
       environment: {
@@ -105,7 +105,7 @@ export class AmazonTimestreamSqsLambdaSampleStack extends cdk.Stack {
 
   private createSampleDataLambda() {
     const sampleDataFunction = new lambda.Function(this, 'TimestreamSQSLambdaSampleData', {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'sampledatapushtosqs.handler',
       code: lambda.Code.fromAsset('lambda'),
       environment: {
