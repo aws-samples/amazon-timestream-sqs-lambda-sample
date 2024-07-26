@@ -1,11 +1,10 @@
-const AWS = require('aws-sdk');
-const sqs = new AWS.SQS();
+const { SQSClient, SendMessageBatchCommand } = require("@aws-sdk/client-sqs");
+const sqs = new SQSClient({ apiVersion: '2012-11-05' });
 
 const queueUrl = process.env.QUEUE_URL;
 
 exports.handler = async (event) => {
     try {
-
         const timestamp = new Date().getTime().toString();
         const data = [
             { device_id: 'device1', sensor_id: 'sensor1', measurement_name: 'temperature', measurement_value: getRandomFloat(20, 30), timestamp: timestamp },
@@ -26,7 +25,9 @@ exports.handler = async (event) => {
             Entries: messages
         };
 
-        await sqs.sendMessageBatch(params).promise();
+        const sendMessageBatchCommand = new SendMessageBatchCommand(params);
+        const response = await sqs.send(sendMessageBatchCommand);
+        console.log(response);
 
         return {
             statusCode: 200,

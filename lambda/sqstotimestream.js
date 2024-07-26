@@ -1,6 +1,8 @@
-const AWS = require('aws-sdk');
-const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
-const timestreamWrite = new AWS.TimestreamWrite();
+const { SQSClient, DeleteMessageBatchCommand } = require("@aws-sdk/client-sqs");
+const { TimestreamWriteClient, WriteRecordsCommand } = require("@aws-sdk/client-timestream-write");
+
+const sqs = new SQSClient({ apiVersion: '2012-11-05' });
+const timestreamWrite = new TimestreamWriteClient({ apiVersion: '2018-11-01' });
 
 const queueUrl = process.env.QUEUE_URL;
 const databaseName = process.env.DATABASE_NAME;
@@ -30,13 +32,13 @@ exports.handler = async (event, context) => {
         });
 
         // Define the parameters for the Timestream write API
-        const params = {
+        const writeRecordsCommand = new WriteRecordsCommand({
             DatabaseName: databaseName,
             TableName: TableName,
             Records: timestreamRecords
-        };
+        });
 
-        await timestreamWrite.writeRecords(params).promise();
+        await timestreamWrite.send(writeRecordsCommand);
 
         // Delete the processed messages from the SQS queue
         const deleteParams = {
@@ -47,7 +49,8 @@ exports.handler = async (event, context) => {
             }))
         };
 
-        await sqs.deleteMessageBatch(deleteParams).promise();
+        const deleteMessageBatchCommand = new DeleteMessageBatchCommand(deleteParams);
+        await sqs.send(deleteMessageBatchCommand);
 
         return {
             statusCode: 200,
