@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const sqs = new AWS.SQS();
+const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
 
 const queueUrl = process.env.QUEUE_URL;
 

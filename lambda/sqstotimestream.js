@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
-const timestreamWrite = new AWS.TimestreamWrite();
+const timestreamWrite = new AWS.TimestreamWrite({ apiVersion: '2018-11-01' });
 
 const queueUrl = process.env.QUEUE_URL;
 const databaseName = process.env.DATABASE_NAME;

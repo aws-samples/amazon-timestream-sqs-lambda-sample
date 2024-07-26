@@ -1,1 +1,8 @@
 .DS_Store
+*.d.ts
+lib/*.js
+bin/*.js
+test/*.js
+output.json
+node_modules
+cdk.out
